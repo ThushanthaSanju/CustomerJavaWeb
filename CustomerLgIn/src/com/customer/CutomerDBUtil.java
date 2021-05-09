@@ -2,7 +2,6 @@ package com.customer;
 
 import java.sql.Connection;
 import java.sql.Statement;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
 
 
 public class CutomerDBUtil{
-  
+
 	private static boolean isSuccess;
 	private static Connection con = null;
 	private static Statement stmt = null;
@@ -76,41 +75,41 @@ public class CutomerDBUtil{
 
 		return isSuccess;
 	}
-		
+
 	public static boolean upadatecustomer(String id,String name,String email,String phone,String userr,String passU) {
-		
+
 		try {
 			con = DBConnect.getConnection();
 			stmt = con.createStatement();
 			String sql = "update customer set Name='"+name+"',Email='"+email+"',phone='"+phone+"',UserName='"+userr+"',Password='"+passU+"'"
 					+"where CustomerID='"+id+"'";
 			int rs = stmt.executeUpdate(sql);
-			
+
 			if (rs>0) {
 				isSuccess = true;
 			}else {
 				isSuccess = false;
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return isSuccess;
 	}
-	
+
 	public static List<Customer> getCustomerDetails(String id){
 		ArrayList<Customer> cus =new ArrayList<Customer>();
-		
+
 		try {
-			
+
 			int convertedId =Integer.parseInt(id);
-			
+
 			con = DBConnect.getConnection();
 			stmt = con.createStatement();
 			String sql = "select * from customer where CustomerID='"+convertedId+"'";
 			rs = stmt.executeQuery(sql);
-			
+
 			while (rs.next()) {
 				int Id = rs.getInt(1);
 				String Name = rs.getString(2);
@@ -118,16 +117,39 @@ public class CutomerDBUtil{
 				String Phone = rs.getString(4);
 				String UserName = rs.getString(5);
 				String Password = rs.getString(6);
-				
+
 				Customer c = new Customer(Id, Name, Email, Phone, UserName, Password);
 				cus.add(c);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return cus;
+	}
+
+	public static boolean deleteCustomer(String id) {
+		int ConvertedId = Integer.parseInt(id);
+
+		try {
+
+			con = DBConnect.getConnection();
+			stmt = con.createStatement();
+			String sql = "delete from customer where CustomerID='"+ConvertedId+"'";
+			int r = stmt.executeUpdate(sql);
+
+			if (r > 0) {
+				isSuccess = true;
+			}else {
+				isSuccess = false;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return isSuccess;
 	}
 
 }
