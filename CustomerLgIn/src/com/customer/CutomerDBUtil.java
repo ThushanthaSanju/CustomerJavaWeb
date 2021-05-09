@@ -11,6 +11,7 @@ import java.util.List;
 
 public class CutomerDBUtil{
   
+	private static boolean isSuccess;
 	private static Connection con = null;
 	private static Statement stmt = null;
 	private static ResultSet rs = null;
@@ -75,6 +76,69 @@ public class CutomerDBUtil{
 
 		return isSuccess;
 	}
-
+		
+	public static boolean upadatecustomer(String id,String name,String email,String phone,String userr,String passU) {
+		
+		try {
+			con = DBConnect.getConnection();
+			stmt = con.createStatement();
+			String sql = "update customer set Name='"+name+"',Email='"+email+"',phone='"+phone+"',UserName='"+userr+"',Password='"+passU+"'"
+					+"where CustomerID='"+id+"'";
+			int rs = stmt.executeUpdate(sql);
+			
+			if (rs>0) {
+				isSuccess = true;
+			}else {
+				isSuccess = false;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return isSuccess;
+	}
+	
+	public static List<Customer> getCustomerDetails(String id){
+		ArrayList<Customer> cus =new ArrayList<Customer>();
+		
+		try {
+			
+			int convertedId =Integer.parseInt(id);
+			
+			con = DBConnect.getConnection();
+			stmt = con.createStatement();
+			String sql = "select * from customer where CustomerID='"+convertedId+"'";
+			rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				int Id = rs.getInt(1);
+				String Name = rs.getString(2);
+				String Email = rs.getString(3);
+				String Phone = rs.getString(4);
+				String UserName = rs.getString(5);
+				String Password = rs.getString(6);
+				
+				Customer c = new Customer(Id, Name, Email, Phone, UserName, Password);
+				cus.add(c);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return cus;
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+

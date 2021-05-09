@@ -13,9 +13,17 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+<table>
 		<c:forEach var="cus" items="${cusDEtails}">
 		
-		<table>
+		
+		<c:set var="id" value="${cus.id}" />
+		<c:set var="name" value="${cus.nameString}" />
+		<c:set var="email" value="${cus.emailString}" />
+		<c:set var="phone" value="${cus.phoneString}" />
+		<c:set var="username" value="${cus.userNameString}" />
+		<c:set var="password" value="${cus.passwordString}" />
 		
 		
 				<tr>
@@ -38,10 +46,32 @@
 					<td>Customer Username</td>
 					<td>${cus.userNameString}</td>
 				</tr>
+				<tr>
+					<td>Password</td>
+					<td>${cus.passwordString}</td>
+				</tr>
 
+		
+		
+		
+		</c:forEach>
 		
 		</table>
 		
-		</c:forEach>
+		<c:url value="updatecustomer.jsp" var="cusupdate">
+		
+			<c:param name="id" value="${id}"></c:param>
+			<c:param name="name" value="${name}"></c:param>
+			<c:param name="email" value="${email}"></c:param>
+			<c:param name="phone" value="${phone}"></c:param>
+			<c:param name="username" value="${username}"></c:param>
+			<c:param name="password" value="${password}"></c:param>
+		
+		</c:url>
+		
+		<a href="${cusupdate}">
+		<input type="button" name="update" value="Update My Data">
+		</a>
+		
 </body>
 </html>

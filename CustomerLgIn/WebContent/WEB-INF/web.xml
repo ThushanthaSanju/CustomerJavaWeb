@@ -24,4 +24,13 @@
 		<url-pattern>/insert</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>updatecustomer</servlet-name>
+		<servlet-class>com.customer.UpdateCustomerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>updatecustomer</servlet-name>
+		<url-pattern>/update</url-pattern>
+	</servlet-mapping>
+	
 </web-app>
