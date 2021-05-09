@@ -10,79 +10,71 @@ import java.util.List;
 
 
 public class CutomerDBUtil{
- 		public static List<Customer> validate(String userName, String Password){
- 			
-			ArrayList<Customer> cus= new ArrayList<>();
-			
-			//create database connection
-			String url = "jdbc:mysql://localhost:3306/hotel";
-			String user = "root";
-			String password = "sanju";
-			
-			
-			//validate
-			try {
-				
-				Class.forName("com.mysql.jdbc.Driver");
-				
-				Connection conn = DriverManager.getConnection(url,user,password);
-				Statement stmt = conn.createStatement();
-				String sql = "select * from customer where UserName='"+userName+"' and Password='"+Password+"'  ";
-				ResultSet rs = stmt.executeQuery(sql);
-				
-				if(rs.next()) {
+  
+	private static Connection con = null;
+	private static Statement stmt = null;
+	private static ResultSet rs = null;
+
+	public static List<Customer> validate(String userName, String Password){
+
+		ArrayList<Customer> cus= new ArrayList<>();
+
+
+		try {
+
+			con= DBConnect.getConnection();
+			stmt = con.createStatement();
+			String sql = "select * from customer where UserName='"+userName+"' and Password='"+Password+"'  ";
+			rs = stmt.executeQuery(sql);
+
+			if(rs.next()) {
 				int id = rs.getInt(1);
 				String nameString = rs.getString(2);
 				String email = rs.getString(3);
 				String phone = rs.getString(4);
 				String userr = rs.getString(5);
 				String passU = rs.getString(6);
-				
+
 				Customer customer = new Customer(id, nameString, email, phone, userr, passU);
-				
+
 				cus.add(customer);
-				
-				}
-				
-			} catch (Exception e) {
-				e.printStackTrace();
+
 			}
-			
-			
-			return cus;
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
- 		
- 		public static boolean insertcustomer(String name,String email,String phone,String userr,String passU) {
- 			
- 			boolean isSuccess=false;
- 			
-			//create database connection
-			String url = "jdbc:mysql://localhost:3306/hotel";
-			String user = "root";
-			String password = "sanju";
-			
-			try {
-				
-				Class.forName("com.mysql.jdbc.Driver");
-				
-				Connection conn = DriverManager.getConnection(url,user,password);
-				Statement stmt = conn.createStatement();
-				String sql = "insert into customer values(0,'"+name+"','"+email+"','"+phone+"','"+userr+"','"+passU+"')";
-				int rs = stmt.executeUpdate(sql);
-				
-				if(rs>0) {
-					isSuccess=true;
-				}else {
-					isSuccess=false;
-				}
-				
-			} catch (Exception e) {
-			e.printStackTrace();	
+
+
+		return cus;
+	}
+
+	public static boolean insertcustomer(String name,String email,String phone,String userr,String passU) {
+
+		boolean isSuccess=false;
+
+
+
+		try {
+
+			con= DBConnect.getConnection();
+			stmt = con.createStatement();
+			String sql = "insert into customer values(0,'"+name+"','"+email+"','"+phone+"','"+userr+"','"+passU+"')";
+			int rs = stmt.executeUpdate(sql);
+
+			if(rs>0) {
+				isSuccess=true;
+			}else {
+				isSuccess=false;
 			}
- 			
- 			
- 			return isSuccess;
- 		}
- 		
- 		
+
+		} catch (Exception e) {
+			e.printStackTrace();	
+		}
+
+
+		return isSuccess;
+	}
+
+
 }
