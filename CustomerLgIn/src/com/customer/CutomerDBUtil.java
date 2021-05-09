@@ -51,4 +51,38 @@ public class CutomerDBUtil{
 			
 			return cus;
 		}
+ 		
+ 		public static boolean insertcustomer(String name,String email,String phone,String userr,String passU) {
+ 			
+ 			boolean isSuccess=false;
+ 			
+			//create database connection
+			String url = "jdbc:mysql://localhost:3306/hotel";
+			String user = "root";
+			String password = "sanju";
+			
+			try {
+				
+				Class.forName("com.mysql.jdbc.Driver");
+				
+				Connection conn = DriverManager.getConnection(url,user,password);
+				Statement stmt = conn.createStatement();
+				String sql = "insert into customer values(0,'"+name+"','"+email+"','"+phone+"','"+userr+"','"+passU+"')";
+				int rs = stmt.executeUpdate(sql);
+				
+				if(rs>0) {
+					isSuccess=true;
+				}else {
+					isSuccess=false;
+				}
+				
+			} catch (Exception e) {
+			e.printStackTrace();	
+			}
+ 			
+ 			
+ 			return isSuccess;
+ 		}
+ 		
+ 		
 }
